@@ -4,8 +4,5 @@ export interface User {
     email: string;
     password: string;
     phone: string;
-    emergency_contacts: {
-        name: string;
-        phone: string;
-    }
+    isAdmin?: boolean;
 }
