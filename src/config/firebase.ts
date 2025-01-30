@@ -1,5 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import {applicationDefault} from "firebase-admin/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -12,5 +13,6 @@ export const firebaseConfig = {
     storageBucket: "nogas-12f19.firebasestorage.app",
     messagingSenderId: "741040430647",
     appId: "1:741040430647:web:18ab5e205dc5009ecee9b2",
-    measurementId: "G-Y4XV3ZBJVC"
+    measurementId: "G-Y4XV3ZBJVC",
 };
+
