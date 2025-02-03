@@ -7,12 +7,12 @@ import SetOptions = firestore.SetOptions;
 export class UserService {
         database = db;
          async createUser(first_name: string, last_name:string, email: string, password: string, phone: string, isAdmin: boolean) {
-                 //Generate the id
+                 // Generate the id
                  // const snapshot = await db.collection("User").count().get();
                  // const id = snapshot.data().count;
-                 //Create the reference with the id => email
+                 // Create the reference with the id => email
                  const docRef = db.collection('User').doc(first_name + "_" + last_name);
-                 //Hashing the password
+                 // Hashing the password
                  let hashedPassword = await bcrypt.hash(password, 12);
                  //Create the user if doesnt exist
                  if(!(await docRef.get()).exists){
@@ -40,5 +40,8 @@ export class UserService {
 
 }
 const userService = new UserService();
-// userService.createUser("John", "John", "john.doe@gmail.com","jognDoe123","514-870-3518",false);
-userService.findUserByEmail("shaheem@gmail.com");
+userService.createUser("John", "John", "john.doe@gmail.com","johnDoe123","514-870-3518",false);
+// test result true it return the user
+// userService.findUserByEmail("john.doe@gmail.com");
+// test result false it return false
+// userService.findUserByEmail("shaheem@gmail.com");
