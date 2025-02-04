@@ -7,6 +7,7 @@ export class MUser implements User {
         public email: string,
         public password: string,
         public phone: string,
-        public isAdmin: boolean
+        public isAdmin: boolean,
+        public id?: number
     ) {}
 }

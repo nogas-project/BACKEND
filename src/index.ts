@@ -3,10 +3,11 @@ import { config } from "./config/config";
 // import {initializeApp} from "firebase/app";
 // import {firebaseConfig} from "./config/firebase";
 // import { getFirestore, collection, getDocs, addDoc } from 'firebase/firestore/lite';
-import { getFirestore, Timestamp, FieldValue, Filter } from 'firebase-admin/firestore';
-import admin from "firebase-admin";
+// import { getFirestore, Timestamp, FieldValue, Filter } from 'firebase-admin/firestore';
+// import admin from "firebase-admin";
 import { MUser } from "./model/user.model";
-import { getFirebaseAdmin } from "./util/firebaseSDK";
+import db from "./util/database.util";
+// import { getFirebaseAdmin } from "./util/firebaseSDK";
 
 const port = config.PORT;
 const app = express();
@@ -19,19 +20,18 @@ app.use(express.json());
 // Firebase Admin Service Account
 // Path in .env should look like this if you have the file in the root dir
 // (e.g SERVICE_ACCOUNT_PATH=../../nogas-12f19-firebase-adminsdk-fbsvc-9b30180fd6.json)
-const serviceAccount = getFirebaseAdmin()
-
-// Initialize Firebase Admin
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-});
-const db = getFirestore();
-
+// const serviceAccount = getFirebaseAdmin()
+//
+// // Initialize Firebase Admin
+// admin.initializeApp({
+//     credential: admin.credential.cert(serviceAccount),
+// });
+// const db = getFirestore();
 async function testAddDoc() {
     const docRef = db.collection('User').doc('test');
 
     // https://stackoverflow.com/questions/52221578/firestore-doesnt-support-javascript-objects-with-custom-prototypes
-    const hc = new MUser("jane", "doe", "email", "hashed", "555", false)
+    const hc = new MUser("janeTest", "doe", "email", "hashed", "555", false)
     await docRef.set(JSON.parse(JSON.stringify(hc)));
 }
 // testAddDoc();
