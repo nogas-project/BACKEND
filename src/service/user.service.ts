@@ -2,13 +2,10 @@ import {MUser} from "../model/user.model";
 import bcrypt from 'bcryptjs';
 import db from "../util/database.util";
 import jwt from 'jsonwebtoken';
-import {firestore} from "firebase-admin";
-import {decodeJwt} from "firebase-admin/lib/utils/jwt";
 import {config} from "../config/config"
 export class UserService {
         database = db;
          async createUser(first_name: string, last_name:string, email: string, password: string, phone: string, isAdmin: boolean) {
-                 // Generate the id
                  const snapshot = await db.collection("User").count().get();
                  const id = snapshot.data().count;
                  // Create the reference with the id
@@ -45,36 +42,33 @@ export class UserService {
                      return false;
                  }
         }
-        async login(email:string, password:string){
-             const user = await this.findUserByEmail(email);
-             if(user){
-                 // @ts-ignore
-                 if(bcrypt.compareSync(password, user.password)){
-                     return jwt.sign({ id:user.id, admin:user.isAdmin }, config.JWT_SECRET, { expiresIn:"8h" });
-                 }
-             }
-             else{
-                 return false;
-             }
-
+    async login(email:string, password:string) {
+        const user = await this.findUserByEmail(email);
+        try{
+            if (user) {
+                // @ts-ignore
+                if (bcrypt.compareSync(password, user.password)) {
+                    return jwt.sign({id: user.id, admin: user.isAdmin}, config.JWT_SECRET, {expiresIn: "8h"});
+                }
+                else return "invalid credentials";
+            }
+            else return "invalid credentials";
+        }catch (e:any) {
+            return "Error from our side";
         }
+
+    }
     async modifyUser(first_name: string, last_name:string, email: string, password: string, phone: string, isAdmin: boolean,id:number) {
         const docRef = db.collection('User').doc(String(id));
-        const getDoc = await docRef.get();
-        // @ts-ignore
-        // let email1 = getDoc.data().email;
-        // Hashing the password
-        // let hashedPassword = await bcrypt.hash(password, 12);
-        //Create the user if the email isn't used
-        // if(!await this.findUserByEmail(email)){
-        //     const newUser = new MUser(first_name, last_name, email, hashedPassword, phone, isAdmin);
-        //     const flag = await docRef.set(JSON.parse(JSON.stringify(newUser)));
-        //     return !!flag.writeTime;
-        // }else{
-        //     console.log("Creating user: " + false);
-        //     return false;
-        // }
-
+        if(password!="") password = await bcrypt.hash(password, 12);
+        if (await this.findUserByEmail(email)) return "Email already used";
+        try{
+            const newUser = new MUser(first_name, last_name, email, password, phone, isAdmin);
+            const flag = await docRef.set(JSON.parse(JSON.stringify(newUser)));
+            return !!flag.writeTime;
+        }catch(err : any){
+            return "Error modifying user: " + err.message;
+        }
     }
 }
 const userService = new UserService();
@@ -88,4 +82,4 @@ const userService = new UserService();
 // userService.findUserByEmail("shaheem@gmail.com");
 //test result true it return the user
 // userService.login("test2@gmail.com","johnDoe123");
-userService.modifyUser("John", "John", "test2@gmail.com","johnDoe123","514-870-3518",false, 2);
+userService.modifyUser("John", "John", "test2test@gmail.com","johnDoe123","514-870-3518",false, 2).then(result => console.log(result));

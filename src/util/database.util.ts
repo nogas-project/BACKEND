@@ -8,4 +8,7 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
 });
 const db = getFirestore();
+export const db_contact = db.collection("EmergencyContact");
+export const db_user = db.collection("User");
+export const db_gas = db.collection("Gas");
 export default db;
