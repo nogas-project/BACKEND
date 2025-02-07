@@ -1,10 +1,9 @@
 import {describe, expect, test, beforeAll, afterAll} from '@jest/globals';
-import {UserService} from "../../service/user.service";
+import {UserService as us} from "../../service/user.service";
 import {MUser} from "../../model/user.model";
 import {decodeJwt} from "firebase-admin/lib/utils/jwt";
 import jwt from "jsonwebtoken";
 import {config} from "../../config/config";
-const us = new UserService();
 // DONT FORGET TO CHANGE ENV FILE
 beforeAll(async () => {
     await us.deleteUser("0");

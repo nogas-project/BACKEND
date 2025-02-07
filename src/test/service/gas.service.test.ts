@@ -1,6 +1,5 @@
 import {describe, expect, test, beforeAll, afterAll} from '@jest/globals';
-import {GasService} from "../../service/gas.service";
-const gs = new GasService();
+import {GasService as gs} from "../../service/gas.service";
 
 beforeAll(async () => {
     await gs.deleteData("0");

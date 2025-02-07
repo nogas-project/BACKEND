@@ -4,8 +4,8 @@ import jwt from 'jsonwebtoken';
 import {dbConfig} from "../config/config.db";
 import {config} from "../config/config";
 export class UserService {
-        DB = dbConfig.COL_USER;
-        async createUser(first_name: string, last_name:string, email: string, password: string, phone: string, isAdmin: boolean) {
+        private static DB = dbConfig.COL_USER;
+        public static async createUser(first_name: string, last_name:string, email: string, password: string, phone: string, isAdmin: boolean) {
                  const snapshot = await this.DB.count().get();
                  const id = snapshot.data().count;
                  // Create the reference with the id
@@ -22,7 +22,7 @@ export class UserService {
                  }
 
         }
-        async findUserByEmail(email1:string) {
+        public static async findUserByEmail(email1:string) {
              let id,email,last_name, first_name, phone, password,isAdmin;
                  const query = await this.DB.where('email', '==', email1).get();
                  if(!query.empty){
@@ -41,7 +41,7 @@ export class UserService {
                      return false;
                  }
         }
-    async login(email:string, password:string) {
+    public static async login(email:string, password:string) {
         const user = await this.findUserByEmail(email);
         try{
             if (user) {
@@ -57,7 +57,7 @@ export class UserService {
         }
 
     }
-    async modifyUser(first_name: string, last_name:string, email: string, password: string, phone: string, id:number) {
+    public static async modifyUser(first_name: string, last_name:string, email: string, password: string, phone: string, id:number) {
         const docRef = this.DB.doc(String(id));
         const user = await this.findUserByID(id);
         let originalEmail;
@@ -74,7 +74,7 @@ export class UserService {
             return "Error modifying user: " + err.message;
         }
     }
-    async deleteUser(id: string) {
+    public static async deleteUser(id: string) {
         try{
             const docRef = this.DB.doc(id);
             return !!await docRef.delete();
@@ -83,7 +83,7 @@ export class UserService {
             return false;
         }
     }
-    async findUserByID(docID:number) {
+    public static async findUserByID(docID:number) {
         const user = await this.DB.doc(String(docID)).get();
         if(user.data()){
             // @ts-ignore

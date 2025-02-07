@@ -2,8 +2,8 @@ import {MGas} from "../model/gas.model";
 import {dbConfig} from "../config/config.db";
 
 export class GasService {
-    DB = dbConfig.COL_GAS;
-    async latestInfo() {
+    private static DB = dbConfig.COL_GAS;
+    public static async latestInfo() {
         let co2_amount, timestamp;
         const query = await this.DB.orderBy("timestamp", "desc").limit(1).get();
         if(!query.empty){
@@ -16,7 +16,7 @@ export class GasService {
         }
         else return null;
     }
-    async getHistory(){
+    public static async getHistory(){
         let result = new Array<MGas>();
         const query = await this.DB.get();
         if(!query.empty){
@@ -27,7 +27,7 @@ export class GasService {
         }
         else return null;
     }
-    async addData(co2_amount: number) {
+    public static async addData(co2_amount: number) {
         try{
             const snapshot = await this.DB.count().get();
             const id = snapshot.data().count;
@@ -41,7 +41,7 @@ export class GasService {
             return false;
         }
     }
-    async deleteData(id: string) {
+    public static async deleteData(id: string) {
         try{
             const docRef = this.DB.doc(id);
             return !!await docRef.delete();
