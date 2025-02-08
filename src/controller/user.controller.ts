@@ -9,7 +9,7 @@ export class UserController {
             let email = req.body.email;
             let password = req.body.password;
             let phone = req.body.phone;
-            const result = await UserService.register(first_name, last_name, email, password, phone, true);
+            const result = await UserService.register(first_name, last_name, email, password, phone, false);
             if (result.flag) {
                 res.status(201).json(result.mess);
             }else{

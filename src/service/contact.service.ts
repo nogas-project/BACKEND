@@ -28,7 +28,9 @@ export class ContactService {
 
             const sp = await this.DB.count().get();
             const id = sp.data().count;
-            const docRef = this.DB.doc(String(id));
+            let docRef = this.DB.doc(String(id));
+            const doc = await docRef.get();
+            if(doc.exists) docRef = this.DB.doc(String(id+1));
             const newData = new MEmergencyContact(name, phone, userId);
             const flag = await docRef.set(JSON.parse(JSON.stringify(newData)));
             return {"flag":!!flag.writeTime,"mess":"Contact added successfully"};
