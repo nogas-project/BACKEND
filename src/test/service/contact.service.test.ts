@@ -1,6 +1,5 @@
 import {describe, expect, test, beforeAll, afterAll} from '@jest/globals';
-import {ContactService} from "../../service/contact.service";
-const cs = new ContactService();
+import {ContactService as cs} from "../../service/contact.service";
 beforeAll(async () => {
     await cs.deleteContact(0);
     await cs.deleteContact(1);
@@ -27,26 +26,29 @@ describe("Contact Service", () => {
     describe("Add new Emergencies contacts with the userID", () => {
         test("Should create a contact and return true", async () => {
             const res = await cs.addContact("A", "514-902-7861", 0);
-            expect(res).toBe(true);
+            expect(res.flag).toBe(true);
         })
         test("Should not create a contact and return false", async () => {
             const res = await cs.addContact("A", "514-902-7861", 0);
-            expect(res).toBe(false);
+            expect(res.flag).toBe(false);
+            expect(res.mess).toBe("This contact is already in use");
         })
         test("Should not create a contact and return false", async () => {
             await cs.addContact("A", "514-908-8989", 0);
             const res = await cs.addContact("A", "514-902-7864", 0);
-            expect(res).toBe(false);
+            expect(res.flag).toBe(false);
+            expect(res.mess).toBe("Already have 3 contacts");
         })
     })
     describe("Update Emergencies contacts with the userID", () => {
         test("Should update a contact and return true", async () => {
             const res = await cs.modifyContact("B", "514-902-7865", 0, 0);
-            expect(res).toBe(true);
+            expect(res.flag).toBe(true);
         })
         test("Should not update a contact and return false", async () => {
             const res = await cs.modifyContact("B", "514-902-7861", 0, 1);
-            expect(res).toBe(false);
+            expect(res.flag).toBe(false);
+            expect(res.mess).toBe("This contact is already in use");
         })
     })
     describe("Delete emergencies contacts with his id", () => {

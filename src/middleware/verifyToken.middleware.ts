@@ -14,10 +14,9 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) : express.
             let id = payload.id;
             // @ts-ignore
             let admin = payload.admin;
-            req.body.id = id;
-            req.body.id = admin;
-            if (id != req.params.id) return res.status(409).send("Forbidden: NOT ALLOWED");
-            if (id == req.params.id) next();
+            req.body.jwtId = id;
+            req.body.admin = admin;
+            next();
         });
     } catch (error) {
         res.status(401).send('Bad Token');

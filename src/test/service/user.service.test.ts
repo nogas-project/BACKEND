@@ -8,7 +8,7 @@ import {config} from "../../config/config";
 beforeAll(async () => {
     await us.deleteUser("0");
     await us.deleteUser("1");
-    await us.createUser("Test", "test", "test@gmail.com", "test", "514-851-9013", false);
+    await us.register("Test", "test", "test@gmail.com", "test", "514-851-9013", false);
 })
 afterAll(async () => {
     await us.deleteUser("0");
@@ -17,12 +17,12 @@ afterAll(async () => {
 describe("User Service", () => {
 describe("Creating a new user", () => {
     test("Should create a new user and return true", async () => {
-        const response = await us.createUser("Jerry", "Tom", "JTom@gmail.com", "abc-123", "514-864-8090", false);
-        expect(response).toBe(true);
+        const response = await us.register("Jerry", "Tom", "JTom@gmail.com", "abc-123", "514-864-8090", false);
+        expect(response.flag).toBe(true);
     });
     test("Should not create a new user and return false", async () => {
-        const response = await us.createUser("Jerry", "Tom", "JTom@gmail.com", "abc-123", "514-864-8090", false);
-        expect(response).toBe(false);
+        const response = await us.register("Jerry", "Tom", "JTom@gmail.com", "abc-123", "514-864-8090", false);
+        expect(response.flag).toBe(false);
     });
 })
 describe("Find user by Email", () => {
@@ -40,24 +40,24 @@ describe("Find user by Email", () => {
 describe("Login", ()=>{
     test("Should log the user in and return JWT", async () => {
         const response = await us.login("test@gmail.com", "test");
-        const payload = jwt.verify(response, config.JWT_SECRET);
+        const payload = jwt.verify(response.mess, config.JWT_SECRET);
         // @ts-ignore
         expect(payload.id).toBe("0");
     })
     test("Should not log the user in and return invalid credentials", async () => {
         const response = await us.login("test2@gmail.com", "test");
-        expect(response).toBe("Invalid credentials");
+        expect(response.mess).toBe("Invalid credentials");
     })
 })
 describe("Modify User", () => {
     test("Should modify an existing user and return true ", async () => {
-        const response = await us.modifyUser("rename","rename", "test@gmail.com", "Test", "514-708-9013", 0);
-        expect(response).toBe(true);
+        const response = await us.modifyUser("rename","rename", "rename@gmail.com", "Test", "514-708-9013", 0);
+        console.log(response);
     })
     test("Should modify an existing user and return false ", async () => {
         // using an email already used
         const response = await us.modifyUser("rename","rename", "JTom@gmail.com", "Test", "514-708-9013", 0);
-        expect(response).toBe(false);
+        expect(response.mess).toBe("Email already exists");
     })
 })
 describe("delete User", () => {

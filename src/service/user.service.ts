@@ -5,21 +5,25 @@ import {dbConfig} from "../config/config.db";
 import {config} from "../config/config";
 export class UserService {
         private static DB = dbConfig.COL_USER;
-        public static async createUser(first_name: string, last_name:string, email: string, password: string, phone: string, isAdmin: boolean) {
-                 const snapshot = await this.DB.count().get();
-                 const id = snapshot.data().count;
-                 // Create the reference with the id
-                 const docRef = this.DB.doc(String(id));
-                 // Hashing the password
-                 let hashedPassword = await bcrypt.hash(password, 12);
-                 //Create the user if the email isn't used
-                 if(!await this.findUserByEmail(email)){
-                     const newUser = new MUser(first_name, last_name, email, hashedPassword, phone, isAdmin);
-                     const flag = await docRef.set(JSON.parse(JSON.stringify(newUser)));
-                     return !!flag.writeTime;
-                 }else{
-                     return false;
-                 }
+        public static async register(first_name: string, last_name:string, email: string, password: string, phone: string, isAdmin: boolean) {
+            try {
+                const snapshot = await this.DB.count().get();
+                const id = snapshot.data().count;
+                // Create the reference with the id
+                const docRef = this.DB.doc(String(id));
+                // Hashing the password
+                let hashedPassword = await bcrypt.hash(password, 12);
+                //Create the user if the email isn't used
+                if (!await this.findUserByEmail(email)) {
+                    const newUser = new MUser(first_name, last_name, email, hashedPassword, phone, isAdmin);
+                    const flag = await docRef.set(JSON.parse(JSON.stringify(newUser)));
+                    return {"flag": !!flag.writeTime, "mess": "User created successfully"};
+                } else {
+                    return {"flag": false, "mess": "Email already exists"};
+                }
+            }catch (e) {
+                return {"flag":false,"mess":"Something went wrong"};
+            }
 
         }
         public static async findUserByEmail(email1:string) {
@@ -42,36 +46,33 @@ export class UserService {
                  }
         }
     public static async login(email:string, password:string) {
-        const user = await this.findUserByEmail(email);
         try{
+            const user = await this.findUserByEmail(email);
             if (user) {
                 // @ts-ignore
                 if (bcrypt.compareSync(password, user.password)) {
-                    return jwt.sign({id: user.id, admin: user.isAdmin}, config.JWT_SECRET, {expiresIn: "8h"});
+                    return {"flag":true,"mess":jwt.sign({id: user.id, admin: user.isAdmin}, config.JWT_SECRET, {expiresIn: "8h"})};
                 }
-                else return "Invalid credentials";
+                else return {"flag":false,"mess":"Invalid credentials"};
             }
-            else return "Invalid credentials";
+            else return {"flag":false,"mess":"Invalid credentials"};
         }catch (e:any) {
-            return "Error from our side";
+            return {"flag":false,"mess":"Something went wrong"};
         }
 
     }
     public static async modifyUser(first_name: string, last_name:string, email: string, password: string, phone: string, id:number) {
-        const docRef = this.DB.doc(String(id));
-        const user = await this.findUserByID(id);
-        let originalEmail;
-        if (typeof user !== "boolean") {
-            originalEmail = user.email;
-        }
-        if(password!="") password = await bcrypt.hash(password, 12);
-        if(await this.findUserByEmail(email) && originalEmail != email) return false;
         try{
+            const docRef = this.DB.doc(String(id));
+
+            if(password!="") password = await bcrypt.hash(password, 12);
+            if(await this.findUserByEmail(email)) return {"flag":false,"mess":"Email already exists"};
+
             const newUser = new MUser(first_name, last_name, email, password, phone, false);
             const flag = await docRef.set(JSON.parse(JSON.stringify(newUser)));
-            return !!flag.writeTime;
+            return {"flag": !!flag.writeTime, "mess": "User modified successfully"};
         }catch(err : any){
-            return "Error modifying user: " + err.message;
+            return {"flag":false,"mess":"Something went wrong"};
         }
     }
     public static async deleteUser(id: string) {
@@ -84,13 +85,18 @@ export class UserService {
         }
     }
     public static async findUserByID(docID:number) {
-        const user = await this.DB.doc(String(docID)).get();
-        if(user.data()){
-            // @ts-ignore
-            return new MUser(user.data().first_name, user.data().last_name, user.data().email, user.data().password, user.data().phone, user.data().isAdmin, docID);
-        }else{
+        try{
+            const user = await this.DB.doc(String(docID)).get();
+            if(user.data()){
+                // @ts-ignore
+                return new MUser(user.data().first_name, user.data().last_name, user.data().email, user.data().password, user.data().phone, user.data().isAdmin, docID);
+            }else{
+                return false;
+            }
+        }catch (e:any){
             return false;
         }
+
     }
 }
 const userService = new UserService();
