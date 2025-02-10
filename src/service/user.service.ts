@@ -99,9 +99,8 @@ export class UserService {
 
     }
 }
-const userService = new UserService();
 // test result true it return true
-// userService.createUser("John", "John", "test2@gmail.com","johnDoe123","514-870-3518",false);
+
 // if the previous command was executed then it should return false
 // userService.createUser("John", "John", "john.doe@gmail.com","johnDoe123","514-870-3518",false);
 // test result true it return the user
