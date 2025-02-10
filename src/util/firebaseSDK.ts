@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 export function getFirebaseAdmin() {
+
     if (!config.firebasePath) {
         throw new Error("Firebase Admin SDK path not configured! Add the path in your .env (e.g SERVICE_ACCOUNT_PATH=../../nogas-12f19-firebase-adminsdk-fbsvc-9b30180fd6.json)");
     }

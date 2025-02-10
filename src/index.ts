@@ -7,12 +7,17 @@ import { config } from "./config/config";
 // import admin from "firebase-admin";
 import { MUser } from "./model/user.model";
 import db from "./util/database.util";
+import userRoute from "./route/user.route";
+import gasRoute from "./route/gas.route";
+import contactRoute from "./route/contact.route";
 // import { getFirebaseAdmin } from "./util/firebaseSDK";
 
 const port = config.PORT;
 const app = express();
 app.use(express.json());
-
+app.use("/", userRoute);
+app.use("/", gasRoute);
+app.use("/", contactRoute);
 // Initialize Firebase
 // const firebaseApp = initializeApp(firebaseConfig);
 // const db = getFirestore(firebaseApp);
@@ -27,21 +32,21 @@ app.use(express.json());
 //     credential: admin.credential.cert(serviceAccount),
 // });
 // const db = getFirestore();
-async function testAddDoc() {
-    const docRef = db.collection('User').doc('test');
-
-    // https://stackoverflow.com/questions/52221578/firestore-doesnt-support-javascript-objects-with-custom-prototypes
-    const hc = new MUser("janeTest", "doe", "email", "hashed", "555", false)
-    await docRef.set(JSON.parse(JSON.stringify(hc)));
-}
+// async function testAddDoc() {
+//     const docRef = db.collection('User').doc('test');
+//
+//     // https://stackoverflow.com/questions/52221578/firestore-doesnt-support-javascript-objects-with-custom-prototypes
+//     const hc = new MUser("janeTest", "doe", "email", "hashed", "555", false)
+//     await docRef.set(JSON.parse(JSON.stringify(hc)));
+// }
 // testAddDoc();
 
-async function testGetDoc() {
-    const snapshot = await db.collection('User').get();
-    snapshot.forEach((doc) => {
-      console.log(doc.id, '=>', doc.data());
-    });
-}
+// async function testGetDoc() {
+//     const snapshot = await db.collection('User').get();
+//     snapshot.forEach((doc) => {
+//       console.log(doc.id, '=>', doc.data());
+//     });
+// }
 // testGetDoc();
 
 app.get("/", (req: express.Request, res: express.Response) => {
