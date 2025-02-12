@@ -9,7 +9,7 @@ export class ContactService {
         const query = await this.DB.where("userId", "==", userId).get();
         if(!query.empty){
             query.docs.map(value=>{
-                result.push(new MEmergencyContact(value.data().name,value.data().phone, value.data().userId, value.id));
+                result.push(new MEmergencyContact(value.data().id, value.data().name,value.data().phone, value.data().userId));
             })
             return result;
         }
@@ -29,9 +29,7 @@ export class ContactService {
             const sp = await this.DB.count().get();
             const id = sp.data().count;
             let docRef = this.DB.doc(String(id));
-            const doc = await docRef.get();
-            if(doc.exists) docRef = this.DB.doc(String(id+1));
-            const newData = new MEmergencyContact(name, phone, userId);
+            const newData = new MEmergencyContact(id, name, phone, userId);
             const flag = await docRef.set(JSON.parse(JSON.stringify(newData)));
             return {"flag":!!flag.writeTime,"mess":"Contact added successfully"};
         }catch (e:any){
@@ -54,7 +52,7 @@ export class ContactService {
             const total = ss.data().count;
             if(total == 1 && phone != originalPhone) return {"flag":false,"mess":"This phone is already in use"};
 
-            const newData = new MEmergencyContact(name, phone, userId);
+            const newData = new MEmergencyContact(id,name, phone, userId);
             const flag = await docRef.set(JSON.parse(JSON.stringify(newData)));
 
             return {"flag":!!flag.writeTime,"mess":"Contact modified successfully"};
@@ -74,14 +72,3 @@ export class ContactService {
     }
 }
 const contactService = new ContactService();
-
-/**
-test ajout de contact true
-contactService.addContact("John", "438-978-9012", 1).then(result => console.log(result));
-contactService.addContact("John", "514-896-0904", 1).then(result => console.log(result));
-test ajout contact false
-contactService.addContact("John", "438-978-9012", 1).then(result => console.log(result));
-contactService.addContact("Jerry", "438-978-9012", 1).then(result => console.log(result))
-test get contacts
-contactService.getContacts(1).then(contacts => console.log(contacts));
- **/

@@ -11,7 +11,7 @@ export class UserController {
             let phone = req.body.phone;
             const result = await UserService.register(first_name, last_name, email, password, phone, false);
             if (result.flag) {
-                res.status(201).json(result.mess);
+                res.status(201).json(result.id);
             }else{
                 res.status(400).json(result.mess);
             }

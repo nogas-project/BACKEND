@@ -7,13 +7,15 @@ beforeEach(async () => {
     await us.deleteUser("0");
     await us.deleteUser("1");
     await us.deleteUser("2");
-    await us.register("test", "test", "test@gmail.com", "gas-123", "514-863-9090", false);
+    const res = await us.register("test", "test", "test@gmail.com", "gas-123", "514-863-9090", false);
 })
 afterEach(async () => {
     await us.deleteUser("0");
     await us.deleteUser("1");
     await us.deleteUser("2");
 })
+describe("User Service", () => {
+
 
 describe("Creating a new user", () => {
     test("Should create a new user and return true", async () => {
@@ -66,4 +68,5 @@ describe("delete User", () => {
         const response = await us.deleteUser("0");
         expect(response).toBe(true);
     })
+})
 })
