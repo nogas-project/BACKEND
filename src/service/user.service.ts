@@ -66,7 +66,8 @@ export class UserService {
             const docRef = this.DB.doc(String(id));
 
             if(password!="") password = await bcrypt.hash(password, 12);
-            if(await this.findUserByEmail(email)) return {"flag":false,"mess":"Email already exists"};
+            const user = await this.findUserByEmail(email);
+            if(user && user.id != id) return {"flag":false,"mess":"Email already exists"};
 
             const newUser = new MUser(first_name, last_name, email, password, phone, false);
             const flag = await docRef.set(JSON.parse(JSON.stringify(newUser)));

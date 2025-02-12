@@ -13,7 +13,6 @@ export class UserController {
             if (result.flag) {
                 res.status(201).json(result.mess);
             }else{
-                console.log(result);
                 res.status(400).json(result.mess);
             }
         }catch (e) {
