@@ -7,7 +7,7 @@ const router = Router();
 // @ts-ignore
 router.get("/contacts/:id",verifyToken, verifyUser, cc.getContacts);
 // @ts-ignore
-router.post("/contacts/:id",verifyToken, verifyUser, cc.addContact);
+router.post("/contacts/:id", cc.addContact);
 // @ts-ignore
 router.put("/contacts/:id",verifyToken, verifyUser, cc.modifyContact);
 // @ts-ignore

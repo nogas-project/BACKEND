@@ -17,7 +17,7 @@ export class UserService {
                 if (!await this.findUserByEmail(email)) {
                     const newUser = new MUser(id,first_name, last_name, email, hashedPassword, phone, isAdmin);
                     const flag = await docRef.set(JSON.parse(JSON.stringify(newUser)));
-                    return {"flag": !!flag.writeTime, "mess": "User created successfully", "id": id};
+                    return {"flag": !!flag.writeTime, "mess": id};
                 } else {
                     return {"flag": false, "mess": "Email already exists"};
                 }
