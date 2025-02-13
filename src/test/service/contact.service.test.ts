@@ -4,22 +4,18 @@ beforeAll(async () => {
     await cs.deleteContact(0);
     await cs.deleteContact(1);
     await cs.deleteContact(2);
-    await cs.deleteContact(3);
     await cs.addContact("A", "514-902-7863", 0);
 })
 afterAll(async () => {
     await cs.deleteContact(0);
     await cs.deleteContact(1);
     await cs.deleteContact(2);
-    await cs.deleteContact(3);
 })
 describe("Contact Service", () => {
     describe("Get Emergencies contacts with the userID", () => {
         test("Should return a list of 1 contacts", async () => {
             const res = await cs.getContacts(0);
-            console.log(res);
-            // @ts-ignore
-            expect(res.length).toBe(1);
+            expect(res?.length).toBe(1);
         })
         test("Should not return a list of contacts", async () => {
             const res = await cs.getContacts(90);

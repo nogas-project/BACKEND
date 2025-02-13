@@ -53,6 +53,8 @@ app.get("/", (req: express.Request, res: express.Response) => {
     res.status(200).send("Welcome");
 })
 
-app.listen(port, () => {
+export let server = app.listen(port, () => {
     console.log("Listening on port", port);
+    console.log("Environment: " + config.ENV);
 })
+export default app;

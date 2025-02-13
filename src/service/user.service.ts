@@ -15,9 +15,9 @@ export class UserService {
                 let hashedPassword = await bcrypt.hash(password, 12);
                 //Create the user if the email isn't used
                 if (!await this.findUserByEmail(email)) {
-                    const newUser = new MUser(first_name, last_name, email, hashedPassword, phone, isAdmin);
+                    const newUser = new MUser(id,first_name, last_name, email, hashedPassword, phone, isAdmin);
                     const flag = await docRef.set(JSON.parse(JSON.stringify(newUser)));
-                    return {"flag": !!flag.writeTime, "mess": "User created successfully"};
+                    return {"flag": !!flag.writeTime, "mess": id};
                 } else {
                     return {"flag": false, "mess": "Email already exists"};
                 }
@@ -27,11 +27,11 @@ export class UserService {
 
         }
         public static async findUserByEmail(email1:string) {
-             let id,email,last_name, first_name, phone, password,isAdmin;
+             let id, email,last_name, first_name, phone, password,isAdmin;
                  const query = await this.DB.where('email', '==', email1).get();
                  if(!query.empty){
                          query.docs.map(doc => {
-                                     id = doc.id;
+                                     id = doc.data().id!;
                                      email = doc.data().email;
                                      first_name = doc.data().first_name;
                                      last_name= doc.data().last_name;
@@ -39,8 +39,7 @@ export class UserService {
                                      phone= doc.data().phone;
                                      isAdmin= doc.data().isAdmin;
                          });
-                         // @ts-ignore
-                     return new MUser(first_name, last_name, email, password, phone, isAdmin, id);
+                     return new MUser(id!,first_name!, last_name!, email!, password!, phone!, isAdmin!);
                  }else{
                      return false;
                  }
@@ -49,7 +48,6 @@ export class UserService {
         try{
             const user = await this.findUserByEmail(email);
             if (user) {
-                // @ts-ignore
                 if (bcrypt.compareSync(password, user.password)) {
                     return {"flag":true,"mess":jwt.sign({id: user.id, admin: user.isAdmin}, config.JWT_SECRET, {expiresIn: "8h"})};
                 }
@@ -66,9 +64,10 @@ export class UserService {
             const docRef = this.DB.doc(String(id));
 
             if(password!="") password = await bcrypt.hash(password, 12);
-            if(await this.findUserByEmail(email)) return {"flag":false,"mess":"Email already exists"};
+            const user = await this.findUserByEmail(email);
+            if(user && user.id != id) return {"flag":false,"mess":"Email already exists"};
 
-            const newUser = new MUser(first_name, last_name, email, password, phone, false);
+            const newUser = new MUser(id,first_name, last_name, email, password, phone, false);
             const flag = await docRef.set(JSON.parse(JSON.stringify(newUser)));
             return {"flag": !!flag.writeTime, "mess": "User modified successfully"};
         }catch(err : any){
@@ -89,7 +88,7 @@ export class UserService {
             const user = await this.DB.doc(String(docID)).get();
             if(user.data()){
                 // @ts-ignore
-                return new MUser(user.data().first_name, user.data().last_name, user.data().email, user.data().password, user.data().phone, user.data().isAdmin, docID);
+                return new MUser(user.data().id,user.data().first_name, user.data().last_name, user.data().email, user.data().password, user.data().phone, user.data().isAdmin);
             }else{
                 return false;
             }
@@ -99,9 +98,8 @@ export class UserService {
 
     }
 }
-const userService = new UserService();
 // test result true it return true
-// userService.createUser("John", "John", "test2@gmail.com","johnDoe123","514-870-3518",false);
+
 // if the previous command was executed then it should return false
 // userService.createUser("John", "John", "john.doe@gmail.com","johnDoe123","514-870-3518",false);
 // test result true it return the user

@@ -4,15 +4,15 @@ import {dbConfig} from "../config/config.db";
 export class GasService {
     private static DB = dbConfig.COL_GAS;
     public static async latestInfo() {
-        let co2_amount, timestamp;
+        let id,co2_amount, timestamp;
         const query = await this.DB.orderBy("timestamp", "desc").limit(1).get();
         if(!query.empty){
             query.docs.map(value=>{
+                id = value.data().id;
                 co2_amount = value.data().co2_amount;
                 timestamp = value.data().timestamp;
             })
-            // @ts-ignore
-            return new MGas(co2_amount, timestamp);
+            return new MGas(id!, co2_amount!, timestamp!);
         }
         else return null;
     }
@@ -21,7 +21,7 @@ export class GasService {
         const query = await this.DB.get();
         if(!query.empty){
             query.docs.map(value=>{
-                result.push(new MGas(value.data().co2_amount, value.data().timestamp));
+                result.push(new MGas(value.data().id,value.data().co2_amount, value.data().timestamp));
             })
             return result;
         }
@@ -33,7 +33,7 @@ export class GasService {
             const id = snapshot.data().count;
             const docRef = this.DB.doc(String(id));
             let timestamp = Date.now();
-            const newData = new MGas(co2_amount,timestamp);
+            const newData = new MGas(id,co2_amount,timestamp);
             const flag = await docRef.set(JSON.parse(JSON.stringify(newData)));
             return !!flag.writeTime;
         }catch (e:any){
@@ -52,8 +52,3 @@ export class GasService {
     }
 }
 const gasService = new GasService();
-//test add new gas data
-// gasService.addData(103).then(r => console.log(r));
-// get the latest info
-// gasService.latestInfo().then(result => console.log(result));
-// gasService.getHistory().then(r => console.log(r));

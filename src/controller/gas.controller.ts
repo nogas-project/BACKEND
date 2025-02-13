@@ -11,7 +11,7 @@ export class GasController {
                 res.status(404).json("No data");
             }
         }catch (e){
-            res.status(500).send("Something went wrong");
+            res.status(500).json("Something went wrong");
         }
     }
     public static async getHistoryInfo(req: Request, res: Response) {
@@ -24,19 +24,19 @@ export class GasController {
             }
         }
         catch (e) {
-            res.status(500).send("Something went wrong");
+            res.status(500).json("Something went wrong");
         }
     }
     public static async addData(req: Request, res: Response) {
         try{
             const result = await gs.addData(req.body.co2_amount);
             if(result){
-                res.status(200).send("Data added successfully");
+                res.status(200).json("Data added successfully");
             }else{
-                res.status(404).send("Something went wrong");
+                res.status(404).json("Something went wrong");
             }
         }catch (e) {
-            res.status(500).send("Something went wrong");
+            res.status(500).json("Something went wrong");
         }
     }
 }

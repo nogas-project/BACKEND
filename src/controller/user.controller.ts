@@ -11,7 +11,7 @@ export class UserController {
             let phone = req.body.phone;
             const result = await UserService.register(first_name, last_name, email, password, phone, false);
             if (result.flag) {
-                res.status(201).json(result.mess);
+                res.status(201).json(result);
             }else{
                 res.status(400).json(result.mess);
             }
@@ -25,9 +25,9 @@ export class UserController {
             let password = req.body.password;
             const result = await UserService.login(email, password);
             if (!result.flag) {
-                res.status(400).send(result.mess);
+                res.status(400).json(result.mess);
             }else{
-                res.status(200).send(result.mess);
+                res.status(200).json(result.mess);
             }
         }catch (e){
             res.status(500).send(false);

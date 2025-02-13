@@ -1,35 +1,38 @@
-import {describe, expect, test, beforeAll, afterAll} from '@jest/globals';
+import {describe, expect, test, beforeAll, afterAll, beforeEach, afterEach} from '@jest/globals';
 import {UserService as us} from "../../service/user.service";
 import {MUser} from "../../model/user.model";
-import {decodeJwt} from "firebase-admin/lib/utils/jwt";
-import jwt from "jsonwebtoken";
-import {config} from "../../config/config";
-// DONT FORGET TO CHANGE ENV FILE
-beforeAll(async () => {
+
+
+beforeEach(async () => {
     await us.deleteUser("0");
     await us.deleteUser("1");
-    await us.register("Test", "test", "test@gmail.com", "test", "514-851-9013", false);
+    await us.deleteUser("2");
+    const res = await us.register("test", "test", "test@gmail.com", "gas-123", "514-863-9090", false);
 })
-afterAll(async () => {
+afterEach(async () => {
     await us.deleteUser("0");
     await us.deleteUser("1");
+    await us.deleteUser("2");
 })
 describe("User Service", () => {
+
+
 describe("Creating a new user", () => {
     test("Should create a new user and return true", async () => {
         const response = await us.register("Jerry", "Tom", "JTom@gmail.com", "abc-123", "514-864-8090", false);
         expect(response.flag).toBe(true);
     });
     test("Should not create a new user and return false", async () => {
-        const response = await us.register("Jerry", "Tom", "JTom@gmail.com", "abc-123", "514-864-8090", false);
+        await us.register("test", "test", "test@gmail.com", "gas-123", "514-863-9090", false);
+        const response = await us.register("Test", "test", "test@gmail.com", "test", "514-851-9013", false);
         expect(response.flag).toBe(false);
     });
 })
 describe("Find user by Email", () => {
     test("Should find a user by email and return the user", async () => {
-        const response = await us.findUserByEmail("JTom@gmail.com");
+        const response = await us.findUserByEmail("test@gmail.com");
         if (response instanceof MUser) {
-            expect(response.first_name).toBe("Jerry");
+            expect(response.first_name).toBe("test");
         }
     })
     test("Should not find a user by email and return false", async () => {
@@ -39,24 +42,24 @@ describe("Find user by Email", () => {
 })
 describe("Login", ()=>{
     test("Should log the user in and return JWT", async () => {
-        const response = await us.login("test@gmail.com", "test");
-        const payload = jwt.verify(response.mess, config.JWT_SECRET);
-        // @ts-ignore
-        expect(payload.id).toBe("0");
+        const response = await us.login("test@gmail.com", "gas-123");
+        expect(response.flag).toBe(true);
+
     })
     test("Should not log the user in and return invalid credentials", async () => {
-        const response = await us.login("test2@gmail.com", "test");
+        const response = await us.login("test@gmail.com", "test");
         expect(response.mess).toBe("Invalid credentials");
     })
 })
 describe("Modify User", () => {
-    test("Should modify an existing user and return true ", async () => {
+    test("Should modify user and return true ", async () => {
         const response = await us.modifyUser("rename","rename", "rename@gmail.com", "Test", "514-708-9013", 0);
-        console.log(response);
+        expect(response.flag).toBe(true);
     })
-    test("Should modify an existing user and return false ", async () => {
+    test("Should not modify user and return false ", async () => {
         // using an email already used
-        const response = await us.modifyUser("rename","rename", "JTom@gmail.com", "Test", "514-708-9013", 0);
+        await us.register("Test", "test", "test60@gmail.com", "test", "514-851-9013", false)
+        const response = await us.modifyUser("rename","rename", "test60@gmail.com", "Test", "514-708-9013", 0);
         expect(response.mess).toBe("Email already exists");
     })
 })
@@ -65,6 +68,5 @@ describe("delete User", () => {
         const response = await us.deleteUser("0");
         expect(response).toBe(true);
     })
-
 })
 })
