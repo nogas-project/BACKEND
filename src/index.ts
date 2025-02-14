@@ -11,9 +11,15 @@ import userRoute from "./route/user.route";
 import gasRoute from "./route/gas.route";
 import contactRoute from "./route/contact.route";
 // import { getFirebaseAdmin } from "./util/firebaseSDK";
-
+import cors from "cors";
 const port = config.PORT;
 const app = express();
+
+let corsOptions = {
+    origin: 'http://localhost:3000',
+}
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/", userRoute);
 app.use("/", gasRoute);
@@ -48,7 +54,6 @@ app.use("/", contactRoute);
 //     });
 // }
 // testGetDoc();
-
 app.get("/", (req: express.Request, res: express.Response) => {
     res.status(200).send("Welcome");
 })
