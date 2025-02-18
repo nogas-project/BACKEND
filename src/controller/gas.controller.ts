@@ -29,6 +29,7 @@ export class GasController {
     }
     public static async addData(req: Request, res: Response) {
         try{
+            if(!req.body.co2_amount) res.status(400).json("Missing required fields");
             const result = await gs.addData(req.body.co2_amount);
             if(result){
                 res.status(200).json("Data added successfully");

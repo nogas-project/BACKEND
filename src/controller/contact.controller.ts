@@ -17,6 +17,7 @@ export class contactController {
     public static async addContact(req: Request, res: Response) {
         try{
             let { name, phone } = req.body;
+            if(!name || !phone) res.status(400).json("Missing required fields");
             const result = await cs.addContact(name, phone, Number(req.params.id));
             if(result.flag)res.status(200).json(result.mess);
             else res.status(404).json(result.mess);
