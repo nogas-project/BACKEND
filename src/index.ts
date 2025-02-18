@@ -10,6 +10,7 @@ import db from "./util/database.util";
 import userRoute from "./route/user.route";
 import gasRoute from "./route/gas.route";
 import contactRoute from "./route/contact.route";
+import {sendEmail} from "./util/email.util";
 // import { getFirebaseAdmin } from "./util/firebaseSDK";
 import cors from "cors";
 const port = config.PORT;
@@ -54,6 +55,7 @@ app.use("/", contactRoute);
 //     });
 // }
 // testGetDoc();
+
 app.get("/", (req: express.Request, res: express.Response) => {
     res.status(200).send("Welcome");
 })
