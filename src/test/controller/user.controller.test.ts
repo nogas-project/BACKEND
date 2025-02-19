@@ -3,7 +3,7 @@ import app, {server} from "../../index";
 import {afterAll, afterEach, beforeEach, describe, expect, test} from "@jest/globals";
 import {UserService as us} from "../../service/user.service";
 let token : string;
-let id : number;
+let id : number | string;
 beforeEach(async () => {
     await us.deleteUser("0");
     await us.deleteUser("1");
@@ -11,7 +11,7 @@ beforeEach(async () => {
     await us.register("test", "test", "test90@gmail.com", "gas-123", "514-863-9090", false);
     const r = await us.register("test", "test", "test@gmail.com", "gas-123", "514-863-9090", true);
     const res = await us.login("test@gmail.com","gas-123");
-    id = r.id!;
+    id = r.mess!;
     token = res.mess;
 })
 afterEach(async () => {
@@ -61,7 +61,7 @@ describe("userController", () => {
                     .post("/user/login")
                     .send({"email": "test70.com",
                         "password": "gas-123"})
-                expect(res.text).toBe("Invalid credentials");
+                expect(res.text).toBe("\"Invalid credentials\"");
             })
         })
     describe("modify", () => {
