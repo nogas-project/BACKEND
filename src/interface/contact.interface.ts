@@ -3,6 +3,6 @@
 export interface EmergencyContact {
     id:number,
     name: string;
-    phone: string;
+    email: string;
     userId: number;
 }

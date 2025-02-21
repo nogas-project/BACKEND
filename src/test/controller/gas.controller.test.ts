@@ -46,7 +46,8 @@ describe("GasController", () => {
                 .post("/addData")
                 .auth(token,{type:'bearer'})
                 .send({ "co2_amount":108})
-            expect(res.text).toBe(JSON.stringify("Data added successfully"));
+            expect(res.text).toBe("\"Data added successfully\"");
+
         })
     })
 })

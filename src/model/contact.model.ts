@@ -4,7 +4,7 @@ export class MEmergencyContact implements EmergencyContact {
     constructor(
         public id : number,
         public name: string,
-        public phone: string,
+        public email: string,
         public userId: number,
     ) {}
 

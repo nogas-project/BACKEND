@@ -4,11 +4,12 @@ import {afterAll, afterEach, beforeEach, describe, expect, test} from "@jest/glo
 import {UserService as us} from "../../service/user.service";
 import {AuthService as auth} from "../../service/auth.service";
 let token : string;
-let id : number;
+let id : number | string;
 beforeEach(async () => {
     await us.deleteUser("0");
     await us.deleteUser("1");
     await us.deleteUser("2");
+
     await auth.register("test", "test", "test90@gmail.com", "gas-123", "514-863-9090", false);
     const r = await auth.register("test", "test", "test@gmail.com", "gas-123", "514-863-9090", true);
     const res = await auth.login("test@gmail.com","gas-123");
