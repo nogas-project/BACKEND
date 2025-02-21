@@ -16,6 +16,8 @@ beforeEach(async () => {
     // @ts-ignore
     id = r.id!;
     token = res.mess;
+    console.log(id)
+    console.log(token)
 })
 afterEach(async () => {
     await us.deleteUser("0");
@@ -40,7 +42,7 @@ describe("userController", () => {
                     "phone": "514-093-9011"})
             expect(res.status).toBe(200);
         })
-        test("Should not be able to modify user", async () => {
+        test("Should not be able to modify user because email exits", async () => {
             await auth.register("Test", "test", "test60@gmail.com", "test", "514-851-9013", false)
             const res = await requests(app)
                 .put("/user/"+id)
@@ -52,6 +54,17 @@ describe("userController", () => {
                     "phone": "514-093-9011"})
             expect(res.status).toBe(404);
             expect(res.body.mess).toBe("Email already exists");
+        })
+        test("Should not be able to modify user because invalid token", async () => {
+            await auth.register("Test", "test", "test60@gmail.com", "test", "514-851-9013", false)
+            const res = await requests(app)
+                .put("/user/"+id)
+                .send({"first_name": "modified",
+                    "last_name": "controller",
+                    "email": "test60@gmail.com",
+                    "password": "gas-123",
+                    "phone": "514-093-9011"})
+            expect(res.status).toBe(403);
         })
     })
 })

@@ -133,3 +133,4 @@ dist
 .idea
 .vscode
 nogas*
+output.json

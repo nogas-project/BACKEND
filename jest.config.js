@@ -4,5 +4,7 @@ module.exports = {
     transform: {
         "^.+.tsx?$": ["ts-jest",{}],
     },
-    forceExit: true
+    forceExit: true,
+    collectCoverage: true,
+    coverageReporters: ["json", "html"],
 };

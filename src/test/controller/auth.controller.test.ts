@@ -63,7 +63,7 @@ describe("authController", () => {
                 .post("/auth/login")
                 .send({"email": "test70.com",
                     "password": "gas-123"})
-            expect(res.text).toBe("Invalid credentials");
+            expect(res.text).toBe("\"Invalid credentials\"");
         })
     })
 })
