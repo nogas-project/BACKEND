@@ -10,6 +10,7 @@ import db from "./util/database.util";
 import userRoute from "./route/user.route";
 import gasRoute from "./route/gas.route";
 import contactRoute from "./route/contact.route";
+import authRoute from "./route/auth.route";
 // import { getFirebaseAdmin } from "./util/firebaseSDK";
 import cors from "cors";
 import emailRoute from "./route/email.route";
@@ -25,6 +26,7 @@ app.use("/", userRoute);
 app.use("/", gasRoute);
 app.use("/", contactRoute);
 app.use("/", emailRoute)
+app.use("/", authRoute)
 // Initialize Firebase
 // const firebaseApp = initializeApp(firebaseConfig);
 // const db = getFirestore(firebaseApp);

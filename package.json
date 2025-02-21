@@ -4,8 +4,9 @@
   "description": "BACKEND Projet - Développement d'application IDO",
   "main": "index.js",
   "scripts": {
-    "start": "npx ts-node-dev src/index.ts --trace-warnings",
-    "test": "NODE_ENV=test & jest --no-cache --detectOpenHandles --coverage --collectCoverageFrom='src/**/*.ts' --coverageDirectory='coverage' "
+    "start": "npx ts-node src/index.ts",
+    "dev": "npx ts-node-dev src/index.ts --trace-warnings",
+    "test": "NODE_ENV=test & jest --no-cache --detectOpenHandles --json --outputFile=output.json"
   },
   "keywords": [],
   "author": "",

@@ -3,6 +3,7 @@ import requests from "supertest";
 import app, {server} from "../../index";
 import {GasService as gs} from "../../service/gas.service";
 import {UserService as us} from "../../service/user.service";
+import {AuthService as auth} from "../../service/auth.service";
 let token: string;
 beforeAll(async () => {
     await gs.deleteData("0");
@@ -10,8 +11,8 @@ beforeAll(async () => {
     await gs.deleteData("2");
     await gs.addData(101);
     await gs.addData(108);
-    await us.register("test", "test", "test@gmail.com", "gas-123", "514-863-9090", true);
-    const res = await us.login("test@gmail.com","gas-123");
+    await auth.register("test", "test", "test@gmail.com", "gas-123", "514-863-9090", true);
+    const res = await auth.login("test@gmail.com","gas-123");
     token = res.mess;
 })
 afterAll(async () => {
@@ -46,6 +47,7 @@ describe("GasController", () => {
                 .auth(token,{type:'bearer'})
                 .send({ "co2_amount":108})
             expect(res.text).toBe("\"Data added successfully\"");
+
         })
     })
 })

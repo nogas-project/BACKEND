@@ -4,6 +4,7 @@ import app, {server} from "../../index";
 import {GasService as gs} from "../../service/gas.service";
 import {UserService as us} from "../../service/user.service";
 import {ContactService as cs} from "../../service/contact.service";
+import {AuthService as auth} from "../../service/auth.service";
 let token: string;
 let id: string | number;
 
@@ -14,8 +15,8 @@ beforeAll(async () => {
     await cs.deleteContact(3);
     await us.deleteUser("0");
     await cs.addContact("A", "A_test@gmail.com", 0);
-    const r = await us.register("test", "test", "test@gmail.com", "gas-123", "514-863-9090", true);
-    const res = await us.login("test@gmail.com","gas-123");
+    const r = await auth.register("test", "test", "test@gmail.com", "gas-123", "514-863-9090", true);
+    const res = await auth.login("test@gmail.com","gas-123");
     id = r.mess;
     token = res.mess;
 })
