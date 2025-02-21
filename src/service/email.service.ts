@@ -10,7 +10,7 @@ export class EmailService {
                 let response = await transporter.sendMail({
                     to: to,
                     subject: subject,
-                    text: mess,
+                    html: `<h1>NoGas notification</h1> <h2>This is an automated message. Please do not reply.</h2> <p>${mess}</p>`
                 })
                 return !!response.envelope;
             }
