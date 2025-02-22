@@ -20,7 +20,7 @@ export class EmailService {
     }
     public static async sendEmailToContact(subject:string, mess:string, userID:number): Promise<boolean> {
         try{
-            if(!subject || !mess || !userID){
+            if(!subject || !mess || userID == undefined){
                 return false;
             }else{
                 let getContacts = await ContactService.getContacts(userID);

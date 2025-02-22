@@ -6,6 +6,7 @@ import {config} from "../config/config";
 
 export class UserService {
     private static DB = dbConfig.COL_USER;
+    private static DB_C = dbConfig.COL_CONTACT;
 
     public static async findUserByEmail(email1:string) {
          let id, email,last_name, first_name, phone, password,isAdmin;
@@ -44,6 +45,10 @@ export class UserService {
 
     public static async deleteUser(id: string) {
         try{
+            const contacts = await this.DB_C.where('userId', '==', id).get()
+            contacts.forEach(contact => {
+                contact.ref.delete();
+            })
             const docRef = this.DB.doc(id);
             return !!await docRef.delete();
         }catch (e:any){
