@@ -22,10 +22,10 @@ export class AuthService {
                 const flag = await docRef.set(JSON.parse(JSON.stringify(newUser)));
                 return {"flag": !!flag.writeTime, "mess": id};
             } else {
-                return {"flag": false, "mess": "Email already exists"};
+                return {"flag": false, "mess": "An account with this email already exists"};
             }
         }catch (e) {
-            return {"flag":false,"mess":"Something went wrong"};
+            return {"flag": false,"mess": "Something went wrong"};
         }
 
     }
@@ -35,7 +35,8 @@ export class AuthService {
             const user = await UserService.findUserByEmail(email);
             if (user) {
                 if (bcrypt.compareSync(password, user.password)) {
-                    return {"flag":true,"mess":jwt.sign({id: user.id, admin: user.isAdmin}, config.JWT_SECRET, {expiresIn: "8h"})};
+                    const token = jwt.sign({id: user.id, admin: user.isAdmin}, config.JWT_SECRET, {expiresIn: "8h"})
+                    return {"flag":true,"mess": token};
                 }
                 else return {"flag":false,"mess":"Invalid credentials"};
             }
