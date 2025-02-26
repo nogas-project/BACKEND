@@ -52,7 +52,7 @@ router.post("/sendEmail", verifyToken, ec.sendEmail);
  * @openapi
  * /sendEmail/{id}:
  *   post:
- *     summary: Send email to a user's contacts
+ *     summary: Send email to user's contacts
  *     requestBody:
  *       required: true
  *       content:
