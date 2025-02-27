@@ -14,7 +14,7 @@ beforeEach(async () => {
     const r = await auth.register("test", "test", "test@gmail.com", "gas-123", "514-863-9090", true);
     const res = await auth.login("test@gmail.com","gas-123");
     // @ts-ignore
-    id = r.id!;
+    id = r.mess!;
     token = res.mess;
     console.log(id)
     console.log(token)
