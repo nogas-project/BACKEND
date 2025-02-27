@@ -24,22 +24,21 @@ export class AuthService {
                 return {"flag": !!flag.writeTime, "mess": id};
             } else {
                 logger.error("Auth Service: Email already exists");
-                return {"flag": false, "mess": "Email already exists"};
+                return {"flag": false, "mess": "An account with this email already exists"};
             }
         }catch (e) {
             logger.error("Auth Service: " + e);
             return {"flag":false,"mess":"Something went wrong"};
-        }
-
-    }
-
+            }
+       }
     public static async login(email:string, password:string) {
         try{
             const user = await UserService.findUserByEmail(email);
             if (user) {
                 if (bcrypt.compareSync(password, user.password)) {
                     logger.info("Auth Service: User logged in");
-                    return {"flag":true,"mess":jwt.sign({id: user.id, admin: user.isAdmin}, config.JWT_SECRET, {expiresIn: "8h"})};
+                    const token = jwt.sign({id: user.id, admin: user.isAdmin}, config.JWT_SECRET, {expiresIn: "8h"})
+                    return {"flag":true,"mess": token};
                 }
                 else{
                     logger.error("Auth Service: Invalid credentials");

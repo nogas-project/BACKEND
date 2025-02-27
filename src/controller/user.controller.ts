@@ -36,6 +36,9 @@ export class UserController {
     public async findById(req: Request, res: Response) {
         try {
             let id = req.params.id;
+            if (!id) {
+                res.status(400).json("Missing required fields");
+            }
             const result = await UserService.findUserByID(Number(id));
             if(result){
                 logger.http("- 200 - User Controller");
@@ -57,6 +60,9 @@ export class UserController {
     public async deleteUser(req: Request, res: Response) {
         try {
             let id = req.params.id;
+            if (!id) {
+                res.status(400).json("Missing required fields");
+            }
             const result = await UserService.deleteUser(id);
             if(result){
                 logger.http("- 200 - User Controller");
@@ -66,13 +72,10 @@ export class UserController {
             else {
                 logger.http("- 404 - User Controller");
                 logger.error("User controller: User not deleted");
-            } res.status(404).send(result);
+            }
         } catch (e) {
             logger.http("- 500 - User Controller");
             logger.error("User controller: " + e);
-            res.status(500).send(false);
         }
-
     }
-
 }

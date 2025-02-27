@@ -25,7 +25,7 @@ export class ContactService {
         }
     }
     public static async addContact(name: string, email: string, userId: number) {
-        try{
+        try {
             //Check if user already have 3 contacts
             const snapshot = await this.DB.where("userId", '==', userId).count().get();
             const count = snapshot.data().count;
