@@ -1,26 +1,32 @@
 import transporter from "../util/email.util";
 import {ContactService} from "./contact.service";
+import {loggerService as logger} from "../util/logger.util";
+
 export class EmailService {
 
     public static async sendEmail(to:string, subject:string, mess:string): Promise<boolean> {
         try{
             if(!to || !subject || !mess){
+                logger.error("Email Service: Missing required fields" );
                 return false;
             }else{
                 let response = await transporter.sendMail({
                     to: to,
                     subject: subject,
                     html: `<h1>NoGas notification</h1> <h2>This is an automated message. Please do not reply.</h2> <p>${mess}</p>`
-                })
+                });
+                logger.info("Email Service : email sent");
                 return !!response.envelope;
             }
         }catch(err){
+            logger.error("Email Service: "+ err );
             return false;
         }
     }
     public static async sendEmailToContact(subject:string, mess:string, userID:number): Promise<boolean> {
         try{
             if(!subject || !mess || !userID){
+                logger.error("Email Service: Missing required fields" );
                 return false;
             }else{
                 let getContacts = await ContactService.getContacts(userID);
@@ -34,9 +40,11 @@ export class EmailService {
                     subject: subject,
                     html: `<h1>NoGas notification</h1> <h2>This is an automated message. Please do not reply.</h2> <p>${mess}</p>`
                 })
+                logger.info("Email Service : email sent")
                 return !!response.envelope;
             }
         }catch(err){
+            logger.error("Email Service: "+ err );
             return false;
         }
     }
