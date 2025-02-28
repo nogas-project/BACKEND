@@ -10,7 +10,7 @@ const router = Router();
  * @openapi
  * /sendEmail:
  *   post:
- *     summary: Send email
+ *     summary: Send email *Must have admin authorization
  *     requestBody:
  *       required: true
  *       content:
