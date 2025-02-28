@@ -32,13 +32,13 @@ export class emailController {
     }
     public static async sendEmailToContact(req : Request, res: Response) {
         try {
-            let {subject, mess} = req.body;
-            if(!subject || !mess){
+            let id = req.params.id;
+            if(!id){
                 logger.http("- 400 - Email Controller");
                 logger.error("Contact Controller: Missing parameters");
                 res.status(400).json({"mess":"Missing parameters"});
             }else{
-                const response = await EmailService.sendEmailToContact(subject,mess,Number(req.params.id));
+                const response = await EmailService.sendEmailToContact(Number(id));
                 if(response) {
                     logger.http("- 200 - Email Controller");
                     logger.info("Email Controller: Email sent");

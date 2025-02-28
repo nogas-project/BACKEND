@@ -1,5 +1,6 @@
 import transporter from "../util/email.util";
 import {ContactService} from "./contact.service";
+import {UserService} from "./user.service";
 import {loggerService as logger} from "../util/logger.util";
 
 export class EmailService {
@@ -23,22 +24,25 @@ export class EmailService {
             return false;
         }
     }
-    public static async sendEmailToContact(subject:string, mess:string, userID:number): Promise<boolean> {
+    public static async sendEmailToContact(userID:number): Promise<boolean> {
         try{
-            if(!subject || !mess || !userID){
+            if(!userID){
                 logger.error("Email Service: Missing required fields" );
                 return false;
             }else{
+                let user = await UserService.findUserByID(userID);
                 let getContacts = await ContactService.getContacts(userID);
                 let mailList:string[] = [];
-                if(getContacts == null || !getContacts.length) return false;
+                if(getContacts == null || !getContacts.length || !user) return false;
                 getContacts.map(contact => {
                     mailList.push(contact.email);
                 })
+                mailList.push(user.email);
+
                 let response = await transporter.sendMail({
                     to: mailList,
-                    subject: subject,
-                    html: `<h1>NoGas notification</h1> <h2>This is an automated message. Please do not reply.</h2> <p>${mess}</p>`
+                    subject: 'NoGas security email',
+                    html: `<h1>NoGas notification</h1> <h2>This is an automated message. Please do not reply.</h2> <p> ${user.first_name} ${user.last_name} is in danger and there's possibility of death </p>`
                 })
                 logger.info("Email Service : email sent")
                 return !!response.envelope;

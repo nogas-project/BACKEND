@@ -2,6 +2,7 @@ import { Router } from "express";
 import {emailController as ec} from "../controller/email.controller";
 import verifyToken from "../middleware/verifyToken.middleware";
 import verifyUser from "../middleware/verifyUser.middleware";
+import verifyRole from "../middleware/verifyRole.middleware";
 
 const router = Router();
 
@@ -9,7 +10,7 @@ const router = Router();
  * @openapi
  * /sendEmail:
  *   post:
- *     summary: Send email
+ *     summary: Send email *Must have admin authorization
  *     requestBody:
  *       required: true
  *       content:
@@ -46,7 +47,7 @@ const router = Router();
  *       - Emailing
  */
 // @ts-ignore
-router.post("/sendEmail", verifyToken, ec.sendEmail);
+router.post("/sendEmail", verifyToken, verifyRole, ec.sendEmail);
 
 /**
  * @openapi
