@@ -18,13 +18,9 @@ afterEach(async () => {
 describe("EmailService", () => {
     describe("Send Email to Contacts", () => {
         test("Should send the email to the contact", async () => {
-            const res = await es.sendEmailToContact("Test", "This is an email from the unit test -- email.service.test.ts --\n Do not reply !", userId)
+            const res = await es.sendEmailToContact(userId)
             expect(res).toBe(true);
-        })
-        test("Should not send the email to the contact", async () => {
-            const res = await es.sendEmailToContact("", "", userId)
-            expect(res).toBe(false);
-        })
+        }, 60000)
     })
     describe("Send Email to someone specific", () => {
         test("Should send the email", async () => {

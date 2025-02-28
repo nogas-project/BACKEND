@@ -46,7 +46,7 @@ describe("authController", () => {
                     "email": "test90@gmail.com",
                     "password": "gas-123",
                     "phone": "514-093-9011"})
-            expect(res.body).toBe("Email already exists");
+            expect(res.body).toBe("An account with this email already exists");
             expect(res.status).toBe(400);
         })
     })

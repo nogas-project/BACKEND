@@ -9,11 +9,15 @@ beforeEach(async () => {
     await us.deleteUser("0");
     await us.deleteUser("1");
     await us.deleteUser("2");
+
     await auth.register("test", "test", "test90@gmail.com", "gas-123", "514-863-9090", false);
-    const r = await auth.register("test", "test", "test5@gmail.com", "gas-123", "514-863-9090", true);
-    const res = await auth.login("test5@gmail.com","gas-123");
-    id = <number>r.mess;
+    const r = await auth.register("test", "test", "test@gmail.com", "gas-123", "514-863-9090", true);
+    const res = await auth.login("test@gmail.com","gas-123");
+    // @ts-ignore
+    id = r.mess!;
     token = res.mess;
+    console.log(id)
+    console.log(token)
 })
 afterEach(async () => {
     await us.deleteUser("0");

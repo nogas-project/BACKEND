@@ -9,7 +9,7 @@ let userId: number;
 let token: string;
 beforeEach(async () => {
     await us.deleteUser("0");
-    const res = await auth.register("test", "test", "test3@gmail.com", "gas-123", "514-863-9090", false);
+    const res = await auth.register("test", "test", "test3@gmail.com", "gas-123", "514-863-9090", true);
     userId = <number>res.mess;
     await cs.addContact("admin", config.GMAIL!, userId );
     let r= await auth.login("test3@gmail.com","gas-123");
@@ -28,14 +28,23 @@ describe("EmailController", () => {
             const res = await requests(app)
                 .post("/sendEmail/"+userId)
                 .auth(token,{type:'bearer'})
-                .send({"subject": "Test", "mess": "This is an email from the unit test"});
             expect(res.status).toBe(200);
         }, 60000)
-        test("Should not be able to send email to Contact", async () => {
+    })
+    describe("Send email to someone - Admin only -", () => {
+        test("Should be able to send email", async () => {
             const res = await requests(app)
-                .post("/sendEmail/"+userId)
+                .post("/sendEmail")
                 .auth(token,{type:'bearer'})
-                .send({"subject": "", "mess": ""});
+                .send({"to": config.GMAIL!,"subject": "Test", "mess": "This is an email from the unit test -- email.controller.test.ts"});
+            expect(res.status).toBe(200);
+        })
+        test("Should not be able to send email", async () => {
+            const res = await requests(app)
+                .post("/sendEmail")
+                .auth(token,{type:'bearer'})
+                .send({"to": "","subject": "", "mess": ""});
+            expect(res.body.mess).toBe("Missing parameters");
             expect(res.status).toBe(400);
         })
     })
