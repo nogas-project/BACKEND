@@ -26,14 +26,17 @@ export class EmailService {
     }
     public static async sendEmailToContact(userID:number): Promise<boolean> {
         try{
-            if(!userID){
-                logger.error("Email Service: Missing required fields" );
+            if(userID == undefined){
+                logger.error("Email Service: Missing required fields");
                 return false;
             }else{
                 let user = await UserService.findUserByID(userID);
                 let getContacts = await ContactService.getContacts(userID);
                 let mailList:string[] = [];
-                if(getContacts == null || !getContacts.length || !user) return false;
+                if(getContacts == null || !getContacts.length || !user) {
+                    console.log("Here")
+                    return false;
+                }
                 getContacts.map(contact => {
                     mailList.push(contact.email);
                 })
