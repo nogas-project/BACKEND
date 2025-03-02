@@ -35,6 +35,8 @@ jobs:
         shell: bash
         env:
           SERVICE_ACCOUNT_PATH: ${{ secrets.SERVICE_ACCOUNT_PATH }}
+          GMAIL: ${{ secrets.GMAIL }}
+          GMAIL_PASS: ${{ secrets.GMAIL_PASS }}
       - run: npm ci
       - run: npm install
       - run: npm run test
