@@ -12,7 +12,7 @@ on:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -28,9 +28,9 @@ jobs:
           cache: 'npm'
       - name: Decode firebase admin SDK
         run:  |
-          echo $env:SERVICE_ACCOUNT_PATH | certutil -decode - firebase-adminsdk.json
+          echo "$SERVICE_ACCOUNT_PATH" | base64 --decode > firebase-adminsdk.json
           echo "SERVICE_ACCOUNT_PATH=$PWD/firebase-adminsdk.json" >> $GITHUB_ENV
-        shell: pwsh
+        shell: bash
         env:
           SERVICE_ACCOUNT_PATH: ${{ secrets.SERVICE_ACCOUNT_PATH }}
       - run: npm ci

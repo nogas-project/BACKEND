@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npx ts-node src/index.ts",
     "dev": "npx ts-node-dev src/index.ts --trace-warnings",
-    "test": "SET NODE_ENV=test & jest --no-cache --detectOpenHandles --json --outputFile=output.json --coverage"
+    "test": "NODE_ENV=test & jest --no-cache --detectOpenHandles --json --outputFile=output.json --coverage"
   },
   "keywords": [],
   "author": "",
