@@ -30,6 +30,8 @@ jobs:
         run:  |
           echo "$SERVICE_ACCOUNT_PATH" | base64 --decode > firebase-adminsdk.json
           echo "SERVICE_ACCOUNT_PATH=$PWD/firebase-adminsdk.json" >> $GITHUB_ENV
+          echo "GMAIL=$GMAIL" >> $GITHUB_ENV
+          echo "GMAIL_PASS=$GMAIL_PASS" >> $GITHUB_ENV
         shell: bash
         env:
           SERVICE_ACCOUNT_PATH: ${{ secrets.SERVICE_ACCOUNT_PATH }}
