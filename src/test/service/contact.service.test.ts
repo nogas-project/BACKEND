@@ -40,7 +40,8 @@ describe("Contact Service", () => {
             expect(res.mess).toBe("Contact modified successfully");
         })
         test("Should not update the contact and return false", async () => {
-            const res = await cs.modifyContact("B", "A_test@gmail.com", 0, 1);
+            await cs.addContact("C", "C_test@gmail.com", 0);
+            const res = await cs.modifyContact("A", "C_test@gmail.com", 0, 0);
             expect(res.flag).toBe(false);
             expect(res.mess).toBe("This email address is already in use");
         })
