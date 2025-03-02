@@ -8,7 +8,7 @@ import {AuthService as auth} from "../../service/auth.service";
 let token: string;
 let id: string | number;
 
-beforeAll(async () => {
+beforeEach(async () => {
     await cs.deleteContact(0);
     await cs.deleteContact(1);
     await cs.deleteContact(2);
@@ -20,12 +20,14 @@ beforeAll(async () => {
     id = r.mess;
     token = res.mess;
 })
-afterAll(async () => {
+afterEach(async () => {
     await us.deleteUser("0");
     await cs.deleteContact(0);
     await cs.deleteContact(1);
     await cs.deleteContact(2);
     await cs.deleteContact(3);
+})
+afterAll(() => {
     server.close();
 })
 describe("ContactController", () => {
@@ -46,14 +48,14 @@ describe("ContactController", () => {
         })
     })
     describe("Add emergencies contacts", () => {
-        test("Should create a contact and return true", async () => {
+        test("Should create a contact", async () => {
             const res = await requests(app)
                 .post("/contacts/"+id)
                 .auth(token,{type:'bearer'})
                 .send({"name":"Jean", "email":"jeanTest@gmail.com"});
             expect(res.status).toBe(200);
         })
-        test("Should not create a contact and return true", async () => {
+        test("Should not create a contact", async () => {
             const res = await requests(app)
                 .post("/contacts/"+id)
                 .auth(token,{type:'bearer'})
@@ -62,7 +64,7 @@ describe("ContactController", () => {
         })
     })
     describe("Modify contact", () => {
-        test("Should modify the data and return true", async () => {
+        test("Should modify the data", async () => {
             const res = await requests(app)
                 .put("/contacts/"+id)
                 .auth(token,{type:'bearer'})

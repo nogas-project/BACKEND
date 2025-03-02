@@ -38,7 +38,7 @@ describe("EmailController", () => {
                 .auth(token,{type:'bearer'})
                 .send({"to": config.GMAIL!,"subject": "Test", "mess": "This is an email from the unit test -- email.controller.test.ts"});
             expect(res.status).toBe(200);
-        })
+        }, 60000)
         test("Should not be able to send email", async () => {
             const res = await requests(app)
                 .post("/sendEmail")
@@ -46,7 +46,7 @@ describe("EmailController", () => {
                 .send({"to": "","subject": "", "mess": ""});
             expect(res.body.mess).toBe("Missing parameters");
             expect(res.status).toBe(400);
-        })
+        }, 60000)
     })
 
 })
