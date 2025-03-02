@@ -1,12 +1,12 @@
-import {describe, expect, test, beforeAll, afterAll} from '@jest/globals';
+import {describe, expect, test, beforeEach, afterEach} from '@jest/globals';
 import {ContactService as cs} from "../../service/contact.service";
-beforeAll(async () => {
+beforeEach(async () => {
     await cs.deleteContact(0);
     await cs.deleteContact(1);
     await cs.deleteContact(2);
     await cs.addContact("A", "A_test@gmail.com", 0);
 })
-afterAll(async () => {
+afterEach(async () => {
     await cs.deleteContact(0);
     await cs.deleteContact(1);
     await cs.deleteContact(2);
@@ -40,7 +40,7 @@ describe("Contact Service", () => {
             expect(res.mess).toBe("Contact modified successfully");
         })
         test("Should not update the contact and return false", async () => {
-            const res = await cs.modifyContact("B", "B_test@gmail.com", 0, 1);
+            const res = await cs.modifyContact("B", "A_test@gmail.com", 0, 1);
             expect(res.flag).toBe(false);
             expect(res.mess).toBe("This email address is already in use");
         })
