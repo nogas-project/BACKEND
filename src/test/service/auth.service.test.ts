@@ -7,7 +7,7 @@ beforeEach(async () => {
     await us.deleteUser("0");
     await us.deleteUser("1");
     await us.deleteUser("2");
-    const res = await auth.register("test", "test", "test@gmail.com", "gas-123", "514-863-9090", false);
+    await auth.register("test", "test", "test@gmail.com", "gas-123", "514-863-9090", false);
 })
 afterEach(async () => {
     await us.deleteUser("0");

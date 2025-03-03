@@ -13,7 +13,7 @@ const port = config.PORT;
 const app = express();
 
 let corsOptions = {
-    origin: 'http://localhost:3000'
+    origin: 'http://nogas.ddns.net'
 }
 
 const swaggerOptions = {
