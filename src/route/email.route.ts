@@ -8,7 +8,7 @@ const router = Router();
 
 /**
  * @openapi
- * /sendEmail:
+ * /api/sendEmail:
  *   post:
  *     summary: Send email *Must have admin authorization
  *     requestBody:
@@ -51,7 +51,7 @@ router.post("/sendEmail", verifyToken, verifyRole, ec.sendEmail);
 
 /**
  * @openapi
- * /sendEmail/{id}:
+ * /api/sendEmail/{id}:
  *   post:
  *     summary: Send email to user's contacts
  *     requestBody:

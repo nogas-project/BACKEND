@@ -8,7 +8,7 @@ const router = Router();
 
 /**
  * @openapi
- * /latest/{id}:
+ * /api/latest/{id}:
  *   get:
  *     summary: Get latest gas snapshot
  *     parameters:
@@ -44,7 +44,7 @@ router.get("/latest/:id", verifyToken, verifyUser, gc.getLatestInfo);
 
 /**
  * @openapi
- * /history/{id}:
+ * /api/history/{id}:
  *   get:
  *     summary: Get all gas snapshots
  *     parameters:
@@ -80,7 +80,7 @@ router.get("/history/:id", verifyToken, verifyUser, gc.getHistoryInfo);
 
 /**
  * @openapi
- * /addData:
+ * /api/addData:
  *   post:
  *     summary: Add gas snapshot *Must have admin authorization, mainly used by Pi for uploading sensor data
  *     requestBody:

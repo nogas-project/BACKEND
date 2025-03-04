@@ -13,7 +13,7 @@ const port = config.PORT;
 const app = express();
 
 let corsOptions = {
-    origin: 'http://nogas.ddns.net'
+    origin: 'https://nogas.ddns.net'
 }
 
 const swaggerOptions = {
@@ -105,13 +105,13 @@ const swaggerUiV1 = swaggerUi.serveFiles(swaggerDocsV1);
 
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use('/v1/api-docs', swaggerUiV1, swaggerUi.setup(swaggerDocsV1));
+app.use('/api/v1/api-docs', swaggerUiV1, swaggerUi.setup(swaggerDocsV1));
 
-app.use("/", userRoute);
-app.use("/", gasRoute);
-app.use("/", contactRoute);
-app.use("/", emailRoute)
-app.use("/", authRoute)
+app.use("/api", userRoute);
+app.use("/api", gasRoute);
+app.use("/api", contactRoute);
+app.use("/api", emailRoute)
+app.use("/api", authRoute)
 
 export let server = app.listen(port, () => {
     console.log("Listening on port", port);

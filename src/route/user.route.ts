@@ -9,7 +9,7 @@ const userController = new UserController();
 
 /**
  * @openapi
- * /user/{id}:
+ * /api/user/{id}:
  *   put:
  *     summary: Modify user's information
  *     parameters:
@@ -46,7 +46,7 @@ router.put("/user/:id", verifyToken, verifyUser, userController.modifyUser);
 
 /**
  * @openapi
- * /user/{id}:
+ * /api/user/{id}:
  *   get:
  *     summary: Get user's information
  *     parameters:
@@ -81,7 +81,7 @@ router.get("/user/:id", verifyToken, verifyUser, userController.findById);
 
 /**
  * @openapi
- * /user/{id}:
+ * /api/user/{id}:
  *   delete:
  *     summary: Delete user *Must have admin authorization
  *     parameters:

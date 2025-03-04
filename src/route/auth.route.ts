@@ -6,7 +6,7 @@ const authController = new AuthController();
 
 /**
  * @openapi
- * /auth/validate:
+ * /api/auth/validate:
  *   post:
  *     summary: Verify JWTs using env JWT_SECRET and returns decoded value
  *     requestBody:
@@ -40,7 +40,7 @@ router.post("/auth/validate", authController.validateToken)
 
 /**
  * @openapi
- * /auth/register:
+ * /api/auth/register:
  *   post:
  *     summary: Create a user account
  *     requestBody:
@@ -86,7 +86,7 @@ router.post("/auth/register", authController.register);
 
 /**
  * @openapi
- * /auth/login:
+ * /api/auth/login:
  *   post:
  *     summary: Login with a user account
  *     requestBody:

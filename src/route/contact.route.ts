@@ -6,7 +6,7 @@ const router = Router();
 
 /**
  * @openapi
- * /contacts/{id}:
+ * /api/contacts/{id}:
  *   get:
  *     summary: Get a user's emergency contacts
  *     parameters:
@@ -42,7 +42,7 @@ router.get("/contacts/:id", verifyToken, verifyUser, cc.getContacts);
 
 /**
  * @openapi
- * /contacts/{id}:
+ * /api/contacts/{id}:
  *   post:
  *     summary: Add emergency contacts to a user
  *     requestBody:
@@ -87,7 +87,7 @@ router.post("/contacts/:id", cc.addContact);
 
 /**
  * @openapi
- * /contacts/{id}:
+ * /api/contacts/{id}:
  *   put:
  *     summary: Modify a user's emergency contacts
  *     requestBody:
@@ -137,7 +137,7 @@ router.put("/contacts/:id",verifyToken, verifyUser, cc.modifyContact);
 
 /**
  * @openapi
- * /contacts/{id}:
+ * /api/contacts/{id}:
  *   delete:
  *     summary: Delete a user's emergency contacts
  *     requestBody:
