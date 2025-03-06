@@ -83,7 +83,7 @@ router.get("/contacts/:id", verifyToken, verifyUser, cc.getContacts);
  *       - Emergency Contacts
  */
 // @ts-ignore
-router.post("/contacts/:id", cc.addContact);
+router.post("/contacts/:id", verifyToken, verifyUser, cc.addContact);
 
 /**
  * @openapi
