@@ -27,7 +27,7 @@ describe("GasController", () => {
     describe("Get latest info", () => {
         test("Get latest info", async () => {
             const res = await requests(app)
-                .get("/latest/0")
+                .get("/api/latest/0")
                 .auth(token,{type:'bearer'})
             expect(res.body?.co2_amount).toBe(108);
         })
@@ -35,7 +35,7 @@ describe("GasController", () => {
     describe("Get data history", () => {
         test("Should return the history", async () => {
             const res = await requests(app)
-                .get("/history/0")
+                .get("/api/history/0")
                 .auth(token,{type:'bearer'})
             expect(res.body?.length).toBe(2);
         })
@@ -43,7 +43,7 @@ describe("GasController", () => {
     describe("Add data", () => {
         test("Should create the data and return true", async () => {
             const res = await requests(app)
-                .post("/addData")
+                .post("/api/addData")
                 .auth(token,{type:'bearer'})
                 .send({ "co2_amount":108})
             expect(res.text).toBe("\"Data added successfully\"");

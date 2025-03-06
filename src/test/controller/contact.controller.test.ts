@@ -34,7 +34,7 @@ describe("ContactController", () => {
     describe("Get contacts", () => {
         test("Should return a list of 1 contacts", async () => {
             const res = await requests(app)
-                .get("/contacts/"+id)
+                .get("/api/contacts/"+id)
                 .auth(token,{type:'bearer'})
             expect(res.status).toBe(200);
             expect(res.body?.length).toBe(1);
@@ -42,7 +42,7 @@ describe("ContactController", () => {
         })
         test("Should not return a list of contacts", async () => {
             const res = await requests(app)
-                .get("/contacts/90")
+                .get("/api/contacts/90")
                 .auth(token,{type:'bearer'})
             expect(res.text).toBe('Forbidden: NOT ALLOWED');
         })
@@ -50,14 +50,14 @@ describe("ContactController", () => {
     describe("Add emergencies contacts", () => {
         test("Should create a contact", async () => {
             const res = await requests(app)
-                .post("/contacts/"+id)
+                .post("/api/contacts/"+id)
                 .auth(token,{type:'bearer'})
                 .send({"name":"Jean", "email":"jeanTest@gmail.com"});
             expect(res.status).toBe(200);
         })
         test("Should not create a contact", async () => {
             const res = await requests(app)
-                .post("/contacts/"+id)
+                .post("/api/contacts/"+id)
                 .auth(token,{type:'bearer'})
                 .send({"name":"Jean", "email":"A_test@gmail.com"})
             expect(res.text).toBe("\"This email address is already in use\"");
@@ -66,7 +66,7 @@ describe("ContactController", () => {
     describe("Modify contact", () => {
         test("Should modify the data", async () => {
             const res = await requests(app)
-                .put("/contacts/"+id)
+                .put("/api/contacts/"+id)
                 .auth(token,{type:'bearer'})
                 .send({
                     "name": "Jean francois",
@@ -78,7 +78,7 @@ describe("ContactController", () => {
         test("Should not modify the data and return false", async () => {
             await cs.addContact("C", "C_test@gmail.com",0);
             const res = await requests(app)
-                .put("/contacts/"+id)
+                .put("/api/contacts/"+id)
                 .auth(token,{type:'bearer'})
                 .send({
                     "name": "Jean francois",

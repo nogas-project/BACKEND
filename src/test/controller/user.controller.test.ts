@@ -33,7 +33,7 @@ describe("userController", () => {
     describe("modify", () => {
         test("Should be able to modify user", async () => {
             const res = await requests(app)
-                .put("/user/"+id)
+                .put("/api/user/"+id)
                 .auth(token,{type:'bearer'})
                 .send({"first_name": "modified",
                     "last_name": "controller",
@@ -45,7 +45,7 @@ describe("userController", () => {
         test("Should not be able to modify user because email exits", async () => {
             await auth.register("Test", "test", "test60@gmail.com", "test", "514-851-9013", false)
             const res = await requests(app)
-                .put("/user/"+id)
+                .put("/api/user/"+id)
                 .auth(token,{type:'bearer'})
                 .send({"first_name": "modified",
                     "last_name": "controller",
@@ -58,7 +58,7 @@ describe("userController", () => {
         test("Should not be able to modify user because invalid token", async () => {
             await auth.register("Test", "test", "test60@gmail.com", "test", "514-851-9013", false)
             const res = await requests(app)
-                .put("/user/"+id)
+                .put("/api/user/"+id)
                 .send({"first_name": "modified",
                     "last_name": "controller",
                     "email": "test60@gmail.com",

@@ -30,7 +30,7 @@ describe("authController", () => {
     describe("register", () => {
         test("Should be able to register user", async () => {
             const res = await requests(app)
-                .post("/auth/register")
+                .post("/api/auth/register")
                 .send({"first_name": "test",
                     "last_name": "controller",
                     "email": "test70@gmail.com",
@@ -40,7 +40,7 @@ describe("authController", () => {
         })
         test("Should not be able to register user", async () => {
             const res = await requests(app)
-                .post("/auth/register")
+                .post("/api/auth/register")
                 .send({"first_name": "test",
                     "last_name": "controller",
                     "email": "test90@gmail.com",
@@ -53,14 +53,14 @@ describe("authController", () => {
     describe("login", () => {
         test("Should be able to login user", async () => {
             const res = await requests(app)
-                .post("/auth/login")
+                .post("/api/auth/login")
                 .send({"email": "test90@gmail.com",
                     "password": "gas-123"})
             expect(res.status).toBe(200);
         })
         test("Should not be able to login user", async () => {
             const res = await requests(app)
-                .post("/auth/login")
+                .post("/api/auth/login")
                 .send({"email": "test70.com",
                     "password": "gas-123"})
             expect(res.text).toBe("\"Invalid credentials\"");
