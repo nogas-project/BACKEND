@@ -28,7 +28,7 @@ export class GasService {
     public static async getHistory(){
         try{
         let result = new Array<MGas>();
-        const query = await this.DB.get();
+        const query = await this.DB.orderBy("id", 'asc').get();
         if(!query.empty){
             query.docs.map(value=>{
                 result.push(new MGas(value.data().id,value.data().co2_amount, value.data().timestamp));
